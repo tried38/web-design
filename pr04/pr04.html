@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Форма псевдорегистрации</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        
+        .registration-form {
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .form-title {
+            text-align: center;
+            margin-bottom: 25px;
+            color: #333;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #333;
+        }
+        
+        .form-input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+        
+        .form-input:focus {
+            border-color: #4a90e2;
+            outline: none;
+            box-shadow: 0 0 5px rgba(74, 144, 226, 0.3);
+        }
+        
+        .checkbox-group {
+            margin-bottom: 15px;
+        }
+        
+        .checkbox-item {
+            margin-bottom: 10px;
+        }
+        
+        .checkbox-item input[type="checkbox"] {
+            margin-right: 10px;
+        }
+        
+        .city-selector {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .city-option {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            text-align: center;
+            cursor: pointer;
+            background-color: #f9f9f9;
+        }
+        
+        .city-option:hover {
+            background-color: #f0f0f0;
+        }
+        
+        .course-select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            background-color: white;
+            font-size: 16px;
+        }
+        
+        .submit-button {
+            width: 100%;
+            padding: 12px;
+            background-color: #4a90e2;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+        
+        .submit-button:hover {
+            background-color: #3a80d2;
+        }
+    </style>
+</head>
+<body>
+    <div class="registration-form">
+        <h1 class="form-title">Форма псевдорегистрации</h1>
+        
+        <form>
+            <div class="form-group">
+                <label class="form-label" for="fullname">ФИО</label>
+                <input class="form-input" type="text" id="fullname" placeholder="Введите Ваше ФИО (напр. Иванов Иван Иванович)">
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label" for="email">Почта</label>
+                <input class="form-input" type="email" id="email" placeholder="user@mail.local">
+            </div>
+            
+            <div class="form-group">
+                <div class="checkbox-group">
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="agreement" checked>
+                        <label for="agreement">Согласие с правилами нашего сайта</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="newsletter" checked>
+                        <label for="newsletter">Согласие на получение только самых нужных новостей</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="not-robot">
+                        <label for="not-robot">Я не робот</label>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label" for="birthdate">Дата рождения</label>
+                <input class="form-input" type="text" id="birthdate" placeholder="дд.мм.гггг">
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label">Город</label>
+                <div class="city-selector">
+                    <div class="city-option">Заволжье</div>
+                    <div class="city-option">Городец</div>
+                    <div class="city-option">Балахна</div>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label" for="course">Курс</label>
+                <select class="course-select" id="course">
+                    <option value="" disabled selected>Выберите курс</option>
+                    <option value="1">Курс 1</option>
+                    <option value="2">Курс 2</option>
+                    <option value="3">Курс 3</option>
+                    <option value="4">Курс 4</option>
+                </select>
+            </div>
+            
+            <button class="submit-button" type="submit">Зарегистрироваться</button>
+        </form>
+    </div>
+</body>
+</html>
