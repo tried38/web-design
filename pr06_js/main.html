@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ПР05 Основы JavaScript</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #3498db;
+        }
+        .task {
+            margin-bottom: 30px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+        .task h3 {
+            margin-top: 0;
+            color: #2c3e50;
+        }
+        button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        button:hover {
+            background-color: #2980b9;
+        }
+        .result {
+            margin-top: 10px;
+            padding: 10px;
+            background-color: #e8f4fc;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>ПР05 Основы JavaScript</h1>
+        <p><strong>ФИО:</strong> Иванов Иван Иванович</p>
+        <p><strong>Группа:</strong> ПИ-21-1</p>
+        <p><strong>Вариант:</strong> 5</p>
+    </div>
+
+    <div class="task">
+        <h3>Задача 1: Заполнение резервуара</h3>
+        <p>Квадратный резервуар имеет сторону N метров. Сверху резервуар открыт и идет дождь, давая L кубических метров воды в час. Снизу резервуар дыряв и потеря воды - M кубических дециметров воды в минуту. Сколько времени в секундах нужно на заполнение резервуара?</p>
+        <button onclick="solveTask1()">Решить задачу 1</button>
+        <div id="result1" class="result"></div>
+    </div>
+
+    <div class="task">
+        <h3>Задача 2: Мячи в ящике</h3>
+        <p>Размер прямоугольного ящика - N на M метров. Сколько мячей радиусом K сантиметров уложится в ящик прямоугольником в один слой?</p>
+        <button onclick="solveTask2()">Решить задачу 2</button>
+        <div id="result2" class="result"></div>
+    </div>
+
+    <div class="task">
+        <h3>Задача 3: Смешивание воды</h3>
+        <p>Смешали V1 литров воды температуры T1 и V2 литров воды температуры T2. Определить объем и температуру полученной смеси.</p>
+        <button onclick="solveTask3()">Решить задачу 3</button>
+        <div id="result3" class="result"></div>
+    </div>
+
+    <script>
+        // Задача 1: Заполнение резервуара
+        function solveTask1() {
+            // Ввод данных
+            const N = parseFloat(prompt("Введите сторону квадратного резервуара N (метры):"));
+            const L = parseFloat(prompt("Введите количество осадков L (м³/час):"));
+            const M = parseFloat(prompt("Введите потерю воды M (дм³/мин):"));
+            
+            // Проверка ввода
+            if (isNaN(N) || isNaN(L) || isNaN(M) || N <= 0 || L < 0 || M < 0) {
+                document.getElementById("result1").innerHTML = "Ошибка: введите корректные положительные числа.";
+                return;
+            }
+            
+            // Расчеты
+            const volume = N * N * N; // Объем резервуара в м³
+            const lossPerHour = M * 0.001 * 60; // Потери в м³/час (переводим дм³/мин в м³/час)
+            const effectiveFillRate = L - lossPerHour; // Эффективная скорость заполнения в м³/час
+            
+            // Проверка возможности заполнения
+            if (effectiveFillRate <= 0) {
+                document.getElementById("result1").innerHTML = "Резервуар никогда не заполнится, так как потери превышают или равны поступлению воды.";
+                return;
+            }
+            
+            const timeHours = volume / effectiveFillRate; // Время в часах
+            const timeSeconds = timeHours * 3600; // Время в секундах
+            
+            // Вывод результата
+            document.getElementById("result1").innerHTML = 
+                `Объем резервуара: ${volume.toFixed(2)} м³<br>
+                 Эффективная скорость заполнения: ${effectiveFillRate.toFixed(4)} м³/час<br>
+                 Время заполнения: ${timeSeconds.toFixed(2)} секунд`;
+        }
+
+        // Задача 2: Мячи в ящике
+        function solveTask2() {
+            // Ввод данных
+            const N = parseFloat(prompt("Введите длину ящика N (метры):"));
+            const M = parseFloat(prompt("Введите ширину ящика M (метры):"));
+            const K = parseFloat(prompt("Введите радиус мяча K (сантиметры):"));
+            
+            // Проверка ввода
+            if (isNaN(N) || isNaN(M) || isNaN(K) || N <= 0 || M <= 0 || K <= 0) {
+                document.getElementById("result2").innerHTML = "Ошибка: введите корректные положительные числа.";
+                return;
+            }
+            
+            // Расчеты
+            const diameter = K * 2 / 100; // Диаметр мяча в метрах
+            const ballsInLength = Math.floor(N / diameter); // Количество мячей по длине
+            const ballsInWidth = Math.floor(M / diameter); // Количество мячей по ширине
+            const totalBalls = ballsInLength * ballsInWidth; // Общее количество мячей
+            
+            // Вывод результата
+            document.getElementById("result2").innerHTML = 
+                `Размер ящика: ${N} × ${M} метров<br>
+                 Диаметр мяча: ${diameter.toFixed(3)} метров<br>
+                 Количество мячей по длине: ${ballsInLength}<br>
+                 Количество мячей по ширине: ${ballsInWidth}<br>
+                 Всего мячей: ${totalBalls}`;
+        }
+
+        // Задача 3: Смешивание воды
+        function solveTask3() {
+            // Ввод данных
+            const V1 = parseFloat(prompt("Введите объем первой воды V1 (литры):"));
+            const T1 = parseFloat(prompt("Введите температуру первой воды T1 (°C):"));
+            const V2 = parseFloat(prompt("Введите объем второй воды V2 (литры):"));
+            const T2 = parseFloat(prompt("Введите температуру второй воды T2 (°C):"));
+            
+            // Проверка ввода
+            if (isNaN(V1) || isNaN(T1) || isNaN(V2) || isNaN(T2) || V1 <= 0 || V2 <= 0) {
+                document.getElementById("result3").innerHTML = "Ошибка: введите корректные числа. Объемы должны быть положительными.";
+                return;
+            }
+            
+            // Расчеты
+            const totalVolume = V1 + V2; // Общий объем смеси
+            const finalTemperature = (V1 * T1 + V2 * T2) / totalVolume; // Температура смеси
+            
+            // Вывод результата
+            document.getElementById("result3").innerHTML = 
+                `Объем смеси: ${totalVolume.toFixed(2)} литров<br>
+                 Температура смеси: ${finalTemperature.toFixed(2)} °C`;
+        }
+    </script>
+</body>
+</html>
