@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Задачи на JavaScript</title>
+</head>
+<body>
+    <h1>Задачи на JavaScript</h1>
+    <p><b>ФИО:</b> Иванов Иван Иванович</p>
+    <p><b>Группа:</b> ИС-23Б</p>
+    <p><b>Вариант:</b> 1</p>
+
+    <h2>Задача 1: Шары в кубе</h2>
+    <p>В куб со стороной R плотно помещено 8 шаров. Какой процент от поверхности куба составляет поверхность одного шара?</p>
+    <button onclick="zadacha1()">Решить</button>
+
+    <h2>Задача 2: Трехзначное число</h2>
+    <p>Найти разницу между суммой всех его цифр и произведением первой и последней цифры.</p>
+    <button onclick="zadacha2()">Решить</button>
+
+    <h2>Задача 3: Расстояние между точками</h2>
+    <p>Найти расстояние между двумя точками (x1, y1) и (x2, y2).</p>
+    <button onclick="zadacha3()">Решить</button>
+
+    <script>
+        // Задача 1
+        function zadacha1() {
+            let R;
+            
+            // Цикл для повторного ввода
+            while (true) {
+                R = prompt("Введите сторону куба R:");
+                
+                if (R > 0) {
+                    break; // число подходит, выходим из цикла
+                }
+                
+                alert("Ошибка! Число должно быть больше 0. Попробуйте снова.");
+            }
+            
+            let r = R / 4;
+            let procent = (4 * 3.14 * r * r) / (6 * R * R) * 100;
+            alert("Процент: " + procent.toFixed(2) + "%");
+        }
+
+        // Задача 2
+        function zadacha2() {
+            let num;
+            
+            // Цикл для повторного ввода
+            while (true) {
+                num = prompt("Введите трехзначное число:");
+                
+                if (num >= 100 && num <= 999) {
+                    break; // число подходит
+                }
+                
+                alert("Ошибка! Число должно быть от 100 до 999. Попробуйте снова.");
+            }
+            
+            let a = Math.floor(num / 100);
+            let b = Math.floor(num / 10) % 10;
+            let c = num % 10;
+            
+            let raznica = (a + b + c) - (a * c);
+            alert("Результат: " + raznica);
+        }
+
+        // Задача 3 (без изменений)
+        function zadacha3() {
+            let x1 = prompt("Введите x1:");
+            let y1 = prompt("Введите y1:");
+            let x2 = prompt("Введите x2:");
+            let y2 = prompt("Введите y2:");
+            
+            let rastoyanie = Math.sqrt((x2-x1)*(x2-x1) + (y2-y1)*(y2-y1));
+            alert("Расстояние: " + rastoyanie.toFixed(2));
+        }
+    </script>
+</body>
+</html>

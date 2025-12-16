@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ПР06 Работа с объектами JavaScript</title>
+</head>
+<body>
+    <div class="header">
+        <h1>ПР06 Работа с объектами JavaScript</h1>
+        <p><strong>ФИО:</strong> Малетин Алексей Дмитриевич</p>
+        <p><strong>Группа:</strong> ИС-23Б</p>
+    </div>
+
+    <script>
+        // 1. Полное описание структуры объекта
+        var radioactive = {
+            emoji: "☢️",
+            name: "radioactive",
+            shortname: ":radioactive:",
+            unicode: "2622 FE0F",
+            html: "&#x2622;&#xFE0F;",
+            category: "Symbols (warning)",
+            order: ""
+        };
+        
+        // Удаляем все свойства, кроме name и category
+        delete radioactive.emoji;
+        delete radioactive.shortname;
+        delete radioactive.unicode;
+        delete radioactive.html;
+        delete radioactive.order;
+        
+        // 2. Создание пустого объекта и добавление свойств
+        var light_skin_tone = {};
+        light_skin_tone.emoji = "🧑🏻‍💻";
+        light_skin_tone.name = "technologist: light skin tone";
+        light_skin_tone.shortname = ":light_skin_tone:";
+        light_skin_tone.unicode = "1F9D1 1F3FB 200D 1F4BB";
+        light_skin_tone.html = "&#x1F9D1;&#x1F3FB;&#x200D;&#x1F4BB;";
+        light_skin_tone.category = "People & Body (person-role)";
+        light_skin_tone.order = "";
+        
+        // Добавляем свойство "is my cool" со значением true
+        light_skin_tone["is my cool"] = true;
+        
+        // 3. Создание объекта на основе функции конструктор
+        function Emoji(emoji, name, shortname, unicode, html, category, order) {
+            this.emoji = emoji;
+            this.name = name;
+            this.shortname = shortname;
+            this.unicode = unicode;
+            this.html = html;
+            this.category = category;
+            this.order = order;
+        }
+        
+        var flag_ru = new Emoji(
+            "🇷🇺",
+            "flag: Russia",
+            ":flag-ru:",
+            "1f1f7-1f1fa",
+            "&#127479;&#127482;",
+            "Flags (country-flag)",
+            "2383"
+        );
+        
+        // Функция для клонирования объекта через for...in
+        function cloneObject(obj) {
+            let clone = {};
+            for (let key in obj) {
+                clone[key] = obj[key];
+            }
+            return clone;
+        }
+        
+        // Функция для объединения объектов через for...in
+        function mergeObjects(...objects) {
+            let merged = {};
+            
+            // Проходим по всем переданным объектам
+            for (let i = 0; i < objects.length; i++) {
+                let obj = objects[i];
+                // Проходим по всем свойствам текущего объекта
+                for (let key in obj) {
+                    merged[key] = obj[key];
+                }
+            }
+            
+            return merged;
+        }
+        
+        // Клонируем все три объекта
+        let clone1 = cloneObject(radioactive);
+        let clone2 = cloneObject(light_skin_tone);
+        let clone3 = cloneObject(flag_ru);
+        
+        // Объединяем клоны через нашу функцию
+        let combinedEmoji = mergeObjects(clone1, clone2, clone3);
+        
+        // Выводим результат в консоль
+        console.log("Объединенный объект (результат клонирования и слияния):");
+        console.log(combinedEmoji);
+        alert("Объединенный объект: " + JSON.stringify(combinedEmoji));
+
+        // Проверяем, что оригинальные объекты не изменились
+        console.log("\nОригинальные объекты:");
+        console.log("radioactive:", radioactive);
+        console.log("light_skin_tone:", light_skin_tone);
+        console.log("flag_ru:", flag_ru);
+
+        alert("Первый объект (radioactive): " + JSON.stringify(radioactive));
+        alert("Второй объект (light_skin_tone): " + JSON.stringify(light_skin_tone));
+        alert("Третий объект (flag_ru): " + JSON.stringify(flag_ru));
+    </script>
+</body>
+</html>
