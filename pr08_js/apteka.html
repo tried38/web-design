@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ПР08 - Работа с классами в JavaScript: Аптека</title>
+</head>
+<body>
+    <h1>Лабораторная работа: Работа с классами в JavaScript</h1>
+    <h2>Тема: Аптека</h2>
+    
+    <div id="output">
+        <h3>Результаты выполнения программы:в коносле</h3>
+        <pre id="console-output"></pre>
+    </div>
+
+
+    <script>
+        // ==============================================
+		// КЛАСС-ПРЕДОК: MedicalProduct (Медицинский товар)
+		// ==============================================
+		class MedicalProduct {
+			// Конструктор с параметрами по умолчанию
+			constructor(name = "Неизвестный товар", price = 0) {
+				// Общие свойства, инициализируемые через конструктор
+				this._name = name;          // Название товара
+				this._price = price;        // Цена товара
+				
+				// Вывод в консоль имени класса при выполнении конструктора
+				console.log(`Создан объект класса: ${this.constructor.name}`);
+			}
+
+			// Геттер для названия
+			get name() {
+				return this._name;
+			}
+
+			// Сеттер для названия
+			set name(newName) {
+				if (typeof newName === 'string' && newName.trim() !== '') {
+					this._name = newName;
+				} else {
+					console.error("Название должно быть непустой строкой");
+				}
+			}
+
+			// Геттер для цены
+			get price() {
+				return this._price;
+			}
+
+			// Сеттер для цены
+			set price(newPrice) {
+				if (typeof newPrice === 'number' && newPrice >= 0) {
+					this._price = newPrice;
+				} else {
+					console.error("Цена должна быть неотрицательным числом");
+				}
+			}
+
+			// Статический метод
+			static getCategoryInfo() {
+				return "Все товары являются медицинской продукцией и требуют соблюдения условий хранения";
+			}
+
+			// Метод, общий для всех объектов
+			getBasicInfo() {
+				return `Товар: ${this._name}, Цена: ${this._price} руб.`;
+			}
+		}
+
+		// ==============================================
+		// КЛАСС-ПОТОМОК 1: Medicine (Лекарство)
+		// ==============================================
+		class Medicine extends MedicalProduct {
+			constructor(name, price, activeSubstance = "Не указано", prescriptionRequired = false) {
+				super(name, price); // Вызов конструктора родителя
+				// Свойства класса-потомка
+				this._activeSubstance = activeSubstance;
+				this._prescriptionRequired = prescriptionRequired;
+			}
+
+			// Геттер для activeSubstance
+			get activeSubstance() {
+				return this._activeSubstance;
+			}
+
+			// Сеттер для activeSubstance
+			set activeSubstance(newSubstance) {
+				if (typeof newSubstance === 'string' && newSubstance.trim() !== '') {
+					this._activeSubstance = newSubstance;
+				} else {
+					console.error("Активное вещество должно быть непустой строкой");
+				}
+			}
+
+			// Геттер для prescriptionRequired
+			get prescriptionRequired() {
+				return this._prescriptionRequired;
+			}
+
+			// Сеттер для prescriptionRequired
+			set prescriptionRequired(requiresPrescription) {
+				if (typeof requiresPrescription === 'boolean') {
+					this._prescriptionRequired = requiresPrescription;
+				} else {
+					console.error("Требование рецепта должно быть булевым значением (true/false)");
+				}
+			}
+
+			// Уникальный метод для класса Medicine
+			getDosageInfo() {
+				const prescriptionStatus = this._prescriptionRequired ? 
+					"Требуется рецепт врача" : "Можно приобрести без рецепта";
+				return `${this._name} содержит ${this._activeSubstance}. ${prescriptionStatus}.`;
+			}
+
+			// Переопределение метода из класса-предка
+			getBasicInfo() {
+				const prescriptionInfo = this._prescriptionRequired ? 
+					"(Рецептурный)" : "(Безрецептурный)";
+				return `${super.getBasicInfo()} ${prescriptionInfo}`;
+			}
+		}
+
+		// ==============================================
+		// КЛАСС-ПОТОМОК 2: MedicalDevice (Медицинское изделие)
+		// ==============================================
+		class MedicalDevice extends MedicalProduct {
+			constructor(name, price, deviceType = "Неизвестный тип", warrantyMonths = 12) {
+				super(name, price); // Вызов конструктора родителя
+				// Свойства класса-потомка
+				this._deviceType = deviceType;
+				this._warrantyMonths = warrantyMonths;
+			}
+
+			// Геттер для deviceType
+			get deviceType() {
+				return this._deviceType;
+			}
+
+			// Сеттер для deviceType
+			set deviceType(newType) {
+				const validTypes = ["Термометр", "Тонометр", "Глюкометр", "Ингалятор", "Другое"];
+				if (validTypes.includes(newType)) {
+					this._deviceType = newType;
+				} else {
+					console.error(`Тип устройства должен быть одним из: ${validTypes.join(", ")}`);
+				}
+			}
+
+			// Геттер для warrantyMonths
+			get warrantyMonths() {
+				return this._warrantyMonths;
+			}
+
+			// Сеттер для warrantyMonths
+			set warrantyMonths(months) {
+				if (Number.isInteger(months) && months >= 0 && months <= 60) {
+					this._warrantyMonths = months;
+				} else {
+					console.error("Гарантия должна быть целым числом от 0 до 60 месяцев");
+				}
+			}
+
+			// Уникальный метод для класса MedicalDevice
+			getMaintenanceInfo() {
+				if (this._warrantyMonths > 0) {
+					return `${this._name} имеет гарантию ${this._warrantyMonths} месяцев. Регулярно проверяйте точность измерений.`;
+				} else {
+					return `${this._name} не имеет гарантии. Используйте с осторожностью.`;
+				}
+			}
+		}
+
+		// ТЕСТИРОВАНИЕ И ДЕМОНСТРАЦИЯ
+		console.log("ДЕМОНСТРАЦИЯ РАБОТЫ КЛАССОВ ДЛЯ АПТЕКИ");
+
+		// Использование статического метода класса-предка
+		console.log("\n1. Статический метод класса MedicalProduct:");
+		console.log(MedicalProduct.getCategoryInfo());
+
+		// Создание объектов класса Medicine
+		console.log("\n2. Создание объектов класса Medicine:");
+		const aspirin = new Medicine("Аспирин", 150, "Ацетилсалициловая кислота", false);
+		const dobavka = new Medicine("Artra", 2450, "Глюкозамина гидрохлорид и Хондроитин сульфат натрия", true);
+
+		console.log(aspirin.getBasicInfo());
+		console.log(aspirin.getDosageInfo());
+		console.log("\n" + dobavka.getBasicInfo());
+		console.log(dobavka.getDosageInfo());
+
+		// Демонстрация работы геттеров и сеттеров для Medicine
+		console.log("\n3. Работа с геттерами и сеттерами класса Medicine:");
+		console.log("Текущее активное вещество аспирина:", aspirin.activeSubstance);
+		aspirin.activeSubstance = "Ацетилсалициловая кислота (500 мг)";
+		console.log("Новое активное вещество аспирина:", aspirin.activeSubstance);
+
+		// Попытка установки некорректного значения
+		console.log("\nПопытка установки некорректного значения:");
+		aspirin.activeSubstance = ""; // Вызовет ошибку
+
+		// Создание объектов класса MedicalDevice
+		console.log("\n4. Создание объектов класса MedicalDevice:");
+		const thermometer = new MedicalDevice("Электронный термометр", 899, "Термометр", 24);
+		const tonometer = new MedicalDevice("Автоматический тонометр", 2499, "Тонометр", 36);
+
+		console.log(thermometer.getBasicInfo());
+		console.log(thermometer.getMaintenanceInfo());
+		console.log("\n" + tonometer.getBasicInfo());
+		console.log(tonometer.getMaintenanceInfo());
+
+		// Демонстрация работы геттеров и сеттеров для MedicalDevice
+		console.log("\n5. Работа с геттерами и сеттерами класса MedicalDevice:");
+		console.log("Текущий тип термометра:", thermometer.deviceType);
+		thermometer.deviceType = "Термометр"; // Корректное значение
+		console.log("Новый тип термометра:", thermometer.deviceType);
+
+		console.log("\nТекущая гарантия тонометра:", tonometer.warrantyMonths, "месяцев");
+		tonometer.warrantyMonths = 48;
+		console.log("Новая гарантия тонометра:", tonometer.warrantyMonths, "месяцев");
+
+		// Попытка установки некорректного значения
+		console.log("\nПопытка установки некорректного типа устройства:");
+		thermometer.deviceType = "Неизвестный"; // Вызовет ошибку
+
+		// Сравнение классов-потомков
+		console.log("СРАВНЕНИЕ КЛАССОВ-ПОТОМКОВ");
+
+		console.log("\n6. Проверка наследования:");
+		console.log("aspirin instanceof Medicine:", aspirin instanceof Medicine);
+		console.log("aspirin instanceof MedicalProduct:", aspirin instanceof MedicalProduct);
+		console.log("thermometer instanceof MedicalDevice:", thermometer instanceof MedicalDevice);
+		console.log("thermometer instanceof MedicalProduct:", thermometer instanceof MedicalProduct);
+
+		console.log("\n7. Сравнение методов:");
+		console.log("У Medicine есть getDosageInfo:", typeof aspirin.getDosageInfo === 'function');
+		console.log("У MedicalDevice есть getMaintenanceInfo:", typeof thermometer.getMaintenanceInfo === 'function');
+		console.log("Оба класса имеют getBasicInfo:", 
+			typeof aspirin.getBasicInfo === 'function' && 
+			typeof thermometer.getBasicInfo === 'function');
+
+		console.log("\n8. Переопределение метода getBasicInfo():");
+		const genericProduct = new MedicalProduct("Общий товар", 100);
+		console.log("Оригинальный метод:", genericProduct.getBasicInfo());
+		console.log("Переопределенный в Medicine:", aspirin.getBasicInfo());
+		console.log("Не переопределен в MedicalDevice:", thermometer.getBasicInfo());
+
+		console.log("\n9. Структура объектов:");
+		console.log("Ключи объекта aspirin:", Object.keys(aspirin));
+		console.log("Ключи объекта thermometer:", Object.keys(thermometer));
+
+		// Проверка прототипной цепочки
+		console.log("\n10. Прототипная цепочка:");
+		console.log("Прототип aspirin:", Object.getPrototypeOf(aspirin).constructor.name);
+		console.log("Прототип thermometer:", Object.getPrototypeOf(thermometer).constructor.name);
+		console.log("Прототип прототипа aspirin:", 
+			Object.getPrototypeOf(Object.getPrototypeOf(aspirin)).constructor.name);
+
+		// Дополнительные тесты
+		console.log("ДОПОЛНИТЕЛЬНЫЕ ТЕСТЫ");
+
+		// Создание объектов с параметрами по умолчанию
+		console.log("\n11. Создание объектов с параметрами по умолчанию:");
+		const defaultMedicine = new Medicine();
+		console.log("Лекарство по умолчанию:", defaultMedicine.getBasicInfo());
+
+		const defaultDevice = new MedicalDevice();
+		console.log("Устройство по умолчанию:", defaultDevice.getBasicInfo());
+
+		// Проверка работы сеттеров родительского класса
+		console.log("\n12. Использование сеттеров родительского класса:");
+		aspirin.name = "Аспирин-Кардио";
+		aspirin.price = 180;
+		console.log("После изменения через сеттеры:", aspirin.getBasicInfo());
+
+		// Массив объектов
+		console.log("\n13. Работа с массивом объектов:");
+		const pharmacyProducts = [
+			new Medicine("Ибупрофен", 120, "Ибупрофен", false),
+			new Medicine("Дротаврерин", 195, "Дротаврерин", false),
+			new MedicalDevice("Глюкометр", 1599, "Глюкометр", 18),
+			new MedicalDevice("Ингалятор", 3200, "Ингалятор", 12)
+		];
+
+		console.log("Товары в аптеке:");
+		pharmacyProducts.forEach((product, index) => {
+			console.log(`${index + 1}. ${product.getBasicInfo()}`);
+			if (product instanceof Medicine) {
+				console.log(`   ${product.getDosageInfo()}`);
+			} else if (product instanceof MedicalDevice) {
+				console.log(`   ${product.getMaintenanceInfo()}`);
+			}
+		});
+		console.log("ТЕСТИРОВАНИЕ ЗАВЕРШЕНО");
+    </script>
+</body>
+</html>
+
+
+
